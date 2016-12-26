@@ -1,0 +1,5 @@
+.env
+/flask
+/.idea
+*.pyc
+*.wsgi
