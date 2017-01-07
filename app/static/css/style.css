@@ -1,0 +1,123 @@
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif; 
+    background: linear-gradient(135deg, #8632B8, #4CDAFF);
+    background: -webkit-linear-gradient(135deg, #8632B8, #4CDAFF);
+    background: -moz-linear-gradient(135deg, #8632B8, #4CDAFF);
+    background: -o-linear-gradient(135deg, #8632B8, #4CDAFF);
+    background: -ms-linear-gradient(135deg, #8632B8, #4CDAFF);
+}
+
+h1 {
+    margin-top: 40px;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 1.25px;
+    filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.35));
+    -webkit-filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.35));
+    
+}
+
+a:hover, a:active, a:focus {
+  outline: 0;
+}
+
+#main {
+    width: 80%;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    bottom: 0;
+    margin: 0 10%;
+    height: 100%;
+    text-align: center;
+}
+
+#main img {
+    padding-top: 60px;
+    width: 64px;
+    display: block;
+    margin: 0 auto;
+}
+
+#main p {
+    margin: 50px 0 14px;
+    color: #FFFFFF;
+    letter-spacing: 0.5px;
+    line-height: 20px;
+}
+
+#main select {
+    width: 20em;
+    text-align-last:center;
+    color: #737373;
+}
+
+.circular-radio {
+
+}
+
+.circular-radio .radio-item {
+    display: inline-block;
+    background: #fff;
+    height: 20px;
+    width: 90px;
+    border-radius: 45px;
+    color: #737373;
+    margin: 0 20px;
+    padding: 35px 0;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+.circular-radio .radio-item.select {
+    background: #353c56;
+    color: #fff;
+}
+
+a.cta-button {
+    display: inline-block;
+    margin: 50px 0 60px;
+    background: #353c56;
+    color: #fff;
+    padding: 10px 32px; 
+    border-radius: 4px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+h3 {
+    font-size: 12px;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+@media (max-width: 640px) {
+    .circular-radio .radio-item {
+        height: 20px;
+        width: 70px;
+        border-radius: 35px;
+        padding: 25px 0;
+        font-size: 1em;
+        margin: 0 10px;
+    }
+}

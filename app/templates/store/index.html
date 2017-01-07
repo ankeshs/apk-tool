@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Compare operators in your region</title>
+        <meta name="description" content="smartapp is world's most advanced data usage tracking App. It makes your smartphone smarter. Easily track your Wifi, 3G, 4G &amp; Roaming usage and save money on data overage. Download the App now">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+        <link rel="icon" href="/telecom-static/img/favicon.png">
+        <link href="https://fonts.googleapis.com/css?family=Raleway:300,400" rel="stylesheet">
+        <link href="{{ 'css/style.css'|static_path('css') }}" rel='stylesheet' type="text/css">
+    </head>
+
+    <body>
+
+    <!--Main-->
+    <div id="main">
+        <img src="https://getsmartapp.com/images/icon_512x512@2x.png">
+        <h1>Find the best plan for your usage</h1>
+        <section class="select-region">
+            <p>Select your region</p>
+            <select>
+            {% for circle in circles.values() %}
+                <option value="{{ circle.guid }}">{{ circle.circle_name }}</option>
+            {% endfor %}
+            </select>
+        </section>
+        <section class="select-duration">
+            <p>Choose plan coverage duration</p>
+            <div class="circular-radio">
+                <a class="radio-item" href="#start" data-num_days="14">2 Weeks</a>
+                <a class="radio-item" href="#start" data-num_days="21">3 Weeks</a>
+                <a class="radio-item" href="#start" data-num_days="28">1 Month</a>
+            </div>
+        </section>
+        <section class="select-connection hide">
+            <p>Select your preferred data connection</p>
+            <div class="circular-radio">
+                <a class="radio-item select" href="javascript:void(0);" data-pref="3g">4G/3G</a>
+                <a class="radio-item" href="javascript:void(0);" data-pref="2g">2G</a>
+            </div>
+        </section>
+        <a class="cta-button hide" id="start" href="javascript:void(0);">Start saving now!</a>
+    </div>
+
+    <!-- Place all the scripts here -->
+
+    <script type="text/javascript" src="{{ 'jquery/jQuery-2.1.4.min.js'|static_path('js') }}"></script>
+    <script type="text/javascript" src="{{ 'js/router.js'|static_path('js') }}"></script>
+    <script type="text/javascript" src="{{ 'js/script.js'|static_path('js') }}"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-53965055-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    </body>
+</html>

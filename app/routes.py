@@ -3,7 +3,7 @@ import flask
 
 # Test route
 @app.route('/test')
-def index():
+def test():
     return responses.success_response("Its works!")
 
 # Clear all cache (dangerous!)
@@ -45,6 +45,14 @@ def user_data():
     return users.data()
 
 # </User routes>
+
+# <Static Route>
+
+@app.route('/', methods=["GET"])
+def index():
+    return render_template("store/index.html")
+
+# </Static Route>
 
 #<Error Handling>
 

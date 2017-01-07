@@ -1,0 +1,356 @@
+<script type="text/template" class="autoload-tpl" id="tplOperatorPreference">
+    <div class="oprcmp">
+        <div class="lc route-pref">
+            <section class="select-duration">
+                <p>Choose plan coverage duration</p>
+                <div class="circular-radio">
+                    <% _.each([{n: 14, s: "2 Weeks"}, {n: 21, s: "3 Weeks"}, {n: 28, s: "1 Month"}], function(item) { %>
+                    <a class="radio-item <%= ($.App.Preference.numDays == item.n)? 'select':'' %>" href="javascript:void(0);" data-num_days="<%= item.n %>"><%= item.s %></a>
+                    <% }); %>
+                </div>
+            </section>
+            <section class="select-connection">
+                <p>Select your preferred data connection</p>
+                <div class="circular-radio">
+                    <a class="radio-item <%= ($.App.Preference.dataPreference == '3g')? 'select':'' %>" href="javascript:void(0);" data-pref="3g">4G/3G</a>
+                    <a class="radio-item <%= ($.App.Preference.dataPreference == '2g')? 'select':'' %>" href="javascript:void(0);" data-pref="2g">2G</a>
+                </div>
+            </section>
+        </div>
+        <div class="operator-select">
+            <h1><%= circleName %> Operators</h1>
+            <div class="select-items">
+                <% _.each(operators, function(opr) { %>
+                <%= _.fragments.fragmentPrefSelect(opr) %>
+                <% }); %>
+            </div>
+            <div class="service-type">
+                <span>Select Connection Type</span>
+                <a class="radio-item select" href="javascript:void(0);" data-service_type_id="1">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Prepaid
+                </a>
+                <a class="radio-item postpaid-selector" href="javascript:void(0);" data-service_type_id="2">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Postpaid
+                </a>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" class="autoload-fg" id="fragmentPrefSelect">
+    <a class="radio-item <%= ($.App.selectedProviders.indexOf(id)>=0)? 'select': '' %>" href="javascript:void(0);" data-service_provider_id="<%= id %>">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        <%= name %>
+    </a>
+</script>
+
+<script type="text/template" id="fragmentLoadingList" class="autoload-fg">
+    <li class="top-item">
+        <div class="loading-1 loading"></div>
+        <div class="loading-2 loading"></div>
+    </li>
+</script>
+
+<script type="text/template" id="fragmentLoadingChart" class="autoload-fg">
+    <div class="chart-loader">
+        <img src="<%= _static_path('img/beepi_loader_blue.gif') %>" />
+    </div>
+</script>
+
+<script type="text/template" id="fragmentFailedTop" class="autoload-fg">
+    <div class="chart-loader">
+        <img src="<%= _static_path('img/oops.png') %>" />
+    </div>
+</script>
+
+<script type="text/template" id="fragmentYourUsage" class="autoload-fg">
+    <div class="your-usage row">
+        <div class="col-xs-1">
+            <div class="circular"></div>
+        </div>
+        <div class="col-xs-8 your-usage-title">
+            Usage pattern for <%= $.App.ComboRecommendation.requestData().numDays %> days
+        </div>
+        <a class="col-xs-3 your-usage-cta" href="javascript:void(0);">
+            Modify &nbsp;<i class="fa fa-chevron-right"></i>
+        </a>
+    </div>
+</script>
+<script type="text/template" id="fragmentComboGraph" class="autoload-fg">
+    <div class="combo-usage-graph">
+        <div class="compare-pair">
+            <div class="bar-graph">
+                <div class="bar-actual-usage local-usage"><div class="val">0</div></div>
+                <div class="bar-recommend-usage local-usage"><div class="val">0</div></div>
+            </div>
+            <div class="bar-label">
+                <div class="metric">Local</div>
+                <div class="value">Minutes</div>
+            </div>
+        </div>
+        <div class="compare-pair">
+            <div class="bar-graph">
+                <div class="bar-actual-usage std-usage"><div class="val">0</div></div>
+                <div class="bar-recommend-usage std-usage"><div class="val">0</div></div>
+            </div>
+            <div class="bar-label">
+                <div class="metric">STD</div>
+                <div class="value">Minutes</div>
+            </div>
+        </div>
+        <div class="compare-pair">
+            <div class="bar-graph">
+                <div class="bar-actual-usage data-usage">
+                    <div class="val">0</div>
+                </div>
+                <div class="bar-recommend-usage data-usage">
+                    <div class="val">0</div>
+                </div>
+            </div>
+            <div class="bar-label">
+                <div class="metric">Data</div>
+                <div class="value"><%= usageData.u %></div>
+            </div>
+        </div>
+        <div class="compare-pair">
+            <div class="bar-graph">
+                <div class="bar-actual-usage sms-usage"><div class="val">0</div></div>
+                <div class="bar-recommend-usage sms-usage"><div class="val">0</div></div>
+            </div>
+            <div class="bar-label">
+                <div class="metric">SMS</div>
+                <div class="value">Messages</div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="tplRecharge" class="autoload-tpl">
+    <div class="app-bar">
+        <a href="javascript:void(0);" class="app-lhs-item">
+            <i class="fa fa-times"> </i>
+        </a>
+        <div class="app-title">
+            <span>Recommended Plan</span>
+        </div>
+        <% if($.App.ComboRecommendation.serviceProviderLogo) { %>
+        <img class="app-rhs-item operator-icon" src="<%= $.App.ComboRecommendation.serviceProviderLogo %>" />
+        <% } %>
+    </div>
+    <div class="app-main-content">
+        <div class="amc-section-top">
+            <section class="call-summary-chart">
+            <% if(loading) { %>
+                <%= _.fragments.fragmentLoadingChart() %>
+            <% } else if(obj.failure) { %>
+                <%= _.fragments.fragmentFailedTop() %>
+            <% } else { %>
+                <%= _.fragments.fragmentComboGraph(obj) %>
+            <% } %>
+            </section>
+        </div>
+        <%= _.fragments.fragmentYourUsage() %>
+        <% if(!obj.failure) { %>
+        <div class="combo-desc row">
+            <div class="col-xs-1">
+                <div class="circular"></div>
+            </div>
+            <div class="col-xs-9 your-usage-title">
+                <% if(loading) { %>
+                    <div class="loading"></div>
+                <% } else if(combo.subsets.length == 1) { %>
+                    <h4>₹ <%= combo.subsets[indexFull].cost / 100 %> smartplan</h4>
+                    <p>1 Plan constitutes this recharge</p>
+                <% } else { %>
+                    <h4>₹ <%= combo.subsets[indexFull].cost / 100 %> smartcombo</h4>
+                    <p><%= combo.plans.length %> Plans constitute combo recharge</p>
+                <% } %>
+            </div>
+            <a class="col-xs-2 your-usage-cta">
+                <i class="fa fa-chevron-down"></i>
+            </a>
+        </div>
+        <div class="amc-section-body combo-set-plans">
+            <div class="cont-body">
+                <ul>
+                <% if(loading) { %>
+                    <br />
+                    <%= _.fragments.fragmentLoadingList() %>
+                <% } else { %>
+                <% _.each(combo.plans, function(plan) { %>
+                    <li class="top-item selected" data-plan_id="<%= plan.planId %>">
+                        <a class="align-body row" href="javascript:void(0);">
+                            <div class="col-xs-12">
+                                <div class="col-xs-1 check">
+                                    <input type="checkbox" />
+                                    <div class="checkbox">
+                                        <i class="fa fa-check" ></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-8">
+                                    <div class="item-title"><%= plan.description %></div>
+                                    <div class="item-subtitle"><%= plan.validity %> Validity</div>
+                                </div>
+                                <div class="col-xs-3 item-data">
+                                    ₹ <%= plan.amount %>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                <% }); %>
+                <% } %>
+                </ul>
+                <% if(!loading) { %>
+                <div class="cta-action">
+                    <button type="button" class="active" title="Send recharge link on smartapp">
+                        Recharge on smartapp
+                    </button>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <% } %>
+        <br />
+        </div>
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/template" id="fragmentUsagePicker" class="autoload-fg">
+	<div class="col-xs-6 title">
+		<%= title %>
+	</div>
+	<div class="col-xs-6 value">
+		<span><%= value %></span> <%= unit %>
+	</div>
+	<div class="col-xs-12">
+		<input type="range" min="0" max="100"></input>
+	</div>
+</script>
+
+<script type="text/template" id="tplRefineCombo" class="autoload-tpl">
+	<div class="custom-usage">
+		<a href="javascript:void(0);" class="app-close"><i class="fa fa-times"></i></a>
+		<h1>Refine your requirements for recommended plan</h1>
+		<a href="javascript:void(0);" class="usage-reset <%= ($.App.RefineCombo.isOriginal)? '' : 'active' %>">Reset</a>
+		<div class="scale-fader">
+			<div class="scale-value"><span>1.00</span>x</div>
+			<p>your current usage</p>
+		</div>
+		<div class="tune-usage">
+			<div class="usage-range col-xs-12 local-usage">
+				<%= _.fragments.fragmentUsagePicker({title: "Local Outgoing Calls", value: 120, unit: "min"}) %>
+			</div>
+			<div class="usage-range col-xs-12 std-usage">
+				<%= _.fragments.fragmentUsagePicker({title: "STD Outgoing Calls", value: 188, unit: "min"}) %>
+			</div>
+			<div class="usage-range col-xs-12 data-usage">
+				<%= _.fragments.fragmentUsagePicker({title: "Mobile Data", value: 267, unit: "MB"}) %>
+			</div>
+			<div class="usage-range col-xs-12 sms-usage">
+				<%= _.fragments.fragmentUsagePicker({title: "Messages", value: 34, unit: "SMS"}) %>
+			</div>
+		</div>
+		<a href="javascript:void(0);" class="refine-cta">Find matching plans</a>
+	</div>
+</script>
+<script type="text/template" id="fragmentOperatorListItem" class="autoload-fg">
+	<li class="sp-<%= metadata.serviceProviderId %>-st-<%= 1 %>">
+	<a class="operator-list-item iblk" href="javascript:void(0);" data-guid="<%= metadata.guid %>" >
+        <div class="lc">
+            <div class="col-xs-2 item-logo">
+                <img src="<%= metadata.serviceProviderLogo %>" />
+            </div>
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <h4><%= metadata.serviceProviderName %> <%= metadata.name %> Recharge</h4>
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <p class="amount">₹ <%= planDetail.cost / 100 %></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>Includes <%= (planDetail.plans.length == 1)? "1 plan" : planDetail.plans.length + " plans" %></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="duration">Lasting <%= metadata.numDays %> Days</p>
+                    </div>
+                </div>
+				<div>
+	                <span class="obadge iblk"><%= metadata.circleName %></span>
+	                <span class="obadge iblk">Prepaid</span>
+				</div>
+				<%= _.fragments.fragmentOperatorStarRating({caption: "Calling Quality", val: metadata.callRating}) %>
+				<%= _.fragments.fragmentOperatorStarRating({caption: "Data Connectivity", val: metadata.dataRating}) %>
+            </div>
+        </div>
+        <div class="rc">
+            <i class="fa fa-chevron-right"></i>
+        </div>
+    </a>
+    </li>
+</script>
+
+<script type="text/template" id="fragmentOperatorStarRating" class="autoload-fg">
+	<div class="star-rate call-rating">
+		<caption><%= caption %></caption>
+		<div class="rc">
+			<% if(!val) { %>
+			Rating unavailable
+			<% } else { %>
+			<% for(var i=0; i<Math.floor(val); i++) { %>
+			<i class="ion ion-ios-star"></i>
+			<% } %>
+			<% if(Math.round(val * 10) % 10 == 5) { %>
+			<i class="ion ion-ios-star-half"></i>
+			<% } %>
+			<% for(var i=0; i<5-Math.ceil(val); i++) { %>
+			<i class="ion ion-ios-star-outline"></i>
+			<% } %>
+			<% } %>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="fragmentOperatorListLoading" class="autoload-fg">
+	<li>
+	<div class="operator-list-item iblk">
+        <div class="lc">
+            <div class="col-xs-2 item-logo">
+                <div class="circular-loading loading">
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <div class="loading-2 loading"></div>
+        		<br />
+        		<div class="loading-1 loading"></div>
+            </div>
+        </div>
+    </div>
+    </li>
+</script>
+
+<script type="text/template" id="fragmentOperatorListEmpty" class="autoload-fg">
+<%= _.fragments.fragmentYourUsage() %>
+    <div class="empty-state error">
+        <i class="fa fa-exclamation-triangle"></i>
+        <p>Something went wrong! Please try again or report this issue.</p>
+    </div>
+</script>
+
+<script type="text/template" id="tplOperatorList" class="autoload-tpl">
+<%= _.fragments.fragmentYourUsage() %>
+<% _.each(planList, function(plan) { %>
+	<%= _.fragments.fragmentOperatorListItem(plan) %>
+<% }); %>
+</script>
