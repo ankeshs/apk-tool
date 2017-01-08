@@ -28,7 +28,7 @@
                 </div>
                 <a id="dropzoneApk" class="dropzone-apk block" ></a>
             </section>
-            <section class="releases lhs block">
+            <section class="releases lhs block" id="releases">
                 <figure class="release block pull-left">
                     <span class="version-code theme-fill"></span>
                     <span class="version-code-val block">34</span>
@@ -96,6 +96,10 @@
     <script src="{{ 'bootstrap/bootstrap.min.js'|static_path('js') }}" type="text/javascript" ></script>
     <script src="{{ 'underscore/underscore-min.js'|static_path('js') }}" type="text/javascript"></script>
     <script src="{{ 'js/dropzone.js'|static_path('js') }}" type="text/javascript"></script>
+    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
 
     <script type="text/javascript">
         var _template_url = "{{ 'tpl/app.html'|static_path('tpl') }}";
@@ -145,7 +149,46 @@
                 }
             }
             $.App.Uploader.zone = $("#dropzoneApk").dropzone();
+
         });
+    </script>
+
+    <script type="text/babel">
+
+        class ReleaseCard extends React.Component {
+          render() {
+            return (
+                <figure className="release block pull-left">
+                    <span className="version-code theme-fill"></span>
+                    <span className="version-code-val block">{this.props.apk.versionCode}</span>
+                    <a className="ctx-menu" href="javascript:void(0);">
+
+                    </a>
+                    <figcaption className="theme-gray-text">
+                        <img className="logo" src="{this.props.apk.launcherIcon}" />
+                        <h2>{this.props.apk.launcherName}</h2>
+                        <h3>{this.props.apk.packageId}</h3>
+                        <span className="version block">v {this.props.apk.version}</span>
+                        <span className="filename block">
+                            <i className="fa fa-file"></i> &nbsp;
+                            {this.props.apk.filename}
+                        </span>
+                    </figcaption>
+                    <span className="block tx-stamp theme-text ">
+                        2017-01-03 23:45
+                    </span>
+                    <span className="block by-user theme-gray-text">
+                        {this.props.apk.user.name}
+                    </span>
+                </figure>
+            );
+          }
+        }
+
+        ReactDOM.render(
+          <h1>Hello, world!</h1>,
+          document.getElementById('releases')
+        );
     </script>
 
 </body>
