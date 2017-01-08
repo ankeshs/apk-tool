@@ -12,6 +12,25 @@ def camel_case(str):
     return components[0] + "".join(x.title() for x in components[1:])
 
 
+def list_to_dict(arr):
+    if type(arr) != list:
+        return arr
+    if len(arr) == 0:
+        return {}
+    if len(arr) == 1:
+        return arr[0]
+    if type(arr[0]) != dict:
+        return arr
+    result = {}
+    for elem in arr:
+        for key, val in elem.iteritems():
+            if key in result:
+                result[key] += [val]
+            else:
+                result[key] = [val]
+    return dict([(k, list_to_dict(v)) for k, v in result.iteritems()])
+
+
 def get_cache(key):
     if key in app.app_memory_cache:
         return app.app_memory_cache[key]

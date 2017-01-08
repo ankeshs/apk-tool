@@ -8,11 +8,19 @@ import responses
 from flask import request
 from sqlalchemy import MetaData
 
+from app.datatools import get_data
+from app.helpers import cache_model
+
 _access_token_cache = {}
 metadata = MetaData(bind=database.engine)
 
 class UserAuth(database.Model):
     __table__ = database.Table('user_auth', metadata, autoload=True)
+
+
+class UserCache:
+    def __init__(self, user):
+        cache_model(self, user, UserAuth)
 
 
 def _email_verification(user):
@@ -181,7 +189,7 @@ def update(data):
     if user.email is None and user.phone is None:
         return responses.error_response("Invalid update data", 400)
     database.session.commit()
-    return helpers.signed_success_json(response)
+    return responses.signed_success_json(response)
 
 
 def data():
@@ -226,8 +234,6 @@ def _validate_token(level):
         checksum = hashlib.sha256(payload).hexdigest()
         return _validate_access_token(access_token, level) and checksum == signature
 
-    return False
-
 
 def auth_check(level=0):
     def outer(func):
@@ -239,3 +245,12 @@ def auth_check(level=0):
         return decorated_function
     return outer
 
+
+def get_users(cache=True):
+    return get_data(
+        query=lambda: UserAuth.query.filter_by(flag=1).all(),
+        cache_class=UserCache,
+        key="get_users",
+        aggregator=lambda obj: obj.id,
+        cache=cache
+    )

@@ -34,8 +34,12 @@ CSRF_SESSION_KEY = "a612de0b07425c08"
 # Secret key for signing cookies
 SECRET_KEY = "a612de0b07425c08"
 
-AJAX_API_BASE = "/apk-tool/"
+AJAX_API_BASE = "/"
 
-STATIC_FILE_BASE = "/apk-tool/static/"
+STATIC_FILE_BASE = "/static/"
 
 STATIC_FILE_VERSION = "1.0"
+
+UPLOAD_FOLDER = '/uploads'
+
+SCRIPT_PATH = '/'

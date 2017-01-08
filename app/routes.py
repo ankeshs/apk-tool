@@ -1,5 +1,10 @@
+import time
+
 from app import app, helpers, users, responses, database
 import flask
+from app.apktool import store
+import os
+from werkzeug.utils import secure_filename
 
 # Test route
 @app.route('/test')
@@ -50,9 +55,25 @@ def user_data():
 
 @app.route('/', methods=["GET"])
 def index():
-    return render_template("store/index.html")
+    return flask.render_template("store/index.html")
 
 # </Static Route>
+
+# <APK Tool Route>
+@app.route('/release', methods=["GET", "POST"])
+def release_index():
+    if flask.request.method == "POST":
+        return store.upload_apk()
+    else:
+        return store.index()
+
+@app.route('/release/<int:id>', methods=["GET", "POST"])
+def release_detail(id):
+    if flask.request.method == "GET":
+        return store.view(id)
+    else:
+        return store.update(id)
+# </APK Tool Route>
 
 #<Error Handling>
 

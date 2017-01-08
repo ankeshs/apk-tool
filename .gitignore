@@ -3,3 +3,5 @@
 /.idea
 *.pyc
 *.wsgi
+/app/static/uploads/*
+.DS_Store
