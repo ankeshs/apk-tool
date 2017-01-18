@@ -1012,7 +1012,7 @@ footer {
 
 /* APK tool CSS */
 .block{ display: block; }
-.lhs { width: calc(100% - 368px); min-width: 360px; }
+.lhs { width: calc(100% - 380px); min-width: 340px; }
 .theme-text { color: #4B77BE; }
 .theme-fill { background: #4B77BE; }
 .theme-gray-text { color: #6e6e6e; }
@@ -1030,7 +1030,7 @@ footer {
 .info-panel {
     background: #2C3E50;
 }
-.upload { background: #FFFFFF; margin: 4px; text-align: center; padding: 16px; position: relative; }
+.upload { background: #FFFFFF; margin: 10px; text-align: center; padding: 16px; position: relative; }
 .upload i { font-size: 96px; margin 20px 0; opacity: 0.5; }
 .upload span { font-size: 1.4em; }
 .upload .progress {
@@ -1053,11 +1053,12 @@ footer {
     padding: 16px;
 }
 .upload.adding .inner { border: 3px dashed #e7e7e2; padding: 13px; }
+.releases { margin: 0 4px; }
 .releases figure.release {
     background: #ffffff;
     width: 260px;
     height: 280px;
-    margin: 4px;
+    margin: 6px;
     position: relative;
     font-size: 12px;
 }
@@ -1106,7 +1107,7 @@ figure.release .by-user { right: 0; text-align: right; }
 .release-actions button { padding: 6px;}
 .release-actions .delete { color: #ec644b; margin-left: 10px;}
 .release-notes {
-    margin: 6px 10px;
+    margin: 6px 16px;
 }
 .release-notes h2 { font-size: 1.4em; }
 .release-notes p { font-size: 1.2em; }

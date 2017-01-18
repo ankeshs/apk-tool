@@ -4,6 +4,7 @@ import os
 import re
 import datetime
 import subprocess
+from time import strftime
 
 import flask
 from werkzeug.utils import secure_filename
@@ -102,14 +103,21 @@ def response_item(obj, keys):
         item['filepath'] = app.config['STATIC_FILE_BASE'] + "uploads/" + obj.path + "/" + obj.filename + ".apk"
     if 'badgingJson' in item:
         item['badgingJson'] = json.loads(obj.badging_json)
+    if 'createdTxStamp' in item:
+        item["createdTxStamp"] = obj.created_tx_stamp.strftime("%d %b, %Y %H:%M")
     item['user'] = helpers.obj_json(users.get_users()[obj.user_id], ['id', 'name', 'email', 'phone'])
     return item
 
 
 def index():
     return flask.jsonify({'items': map(lambda r: response_item(r, [
-        'id', 'filename', 'path', 'package_id', 'launcher_name', 'launcher_icon', 'version', 'version_code', 'created_tx_stamp'
-    ]), models.Release.query.all())})
+            'id', 'filename', 'path', 'package_id', 'launcher_name', 'launcher_icon', 'version', 'version_code', 'created_tx_stamp'
+        ]), models.Release.query
+            .filter(models.Release.status != "DELETED")
+            .order_by(models.Release.id.desc())
+            .all()
+        )}
+    )
 
 
 def view(id):

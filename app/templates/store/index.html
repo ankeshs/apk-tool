@@ -156,37 +156,82 @@
     <script type="text/babel">
 
         class ReleaseCard extends React.Component {
-          render() {
-            return (
-                <figure className="release block pull-left">
-                    <span className="version-code theme-fill"></span>
-                    <span className="version-code-val block">{this.props.apk.versionCode}</span>
-                    <a className="ctx-menu" href="javascript:void(0);">
 
-                    </a>
-                    <figcaption className="theme-gray-text">
-                        <img className="logo" src="{this.props.apk.launcherIcon}" />
-                        <h2>{this.props.apk.launcherName}</h2>
-                        <h3>{this.props.apk.packageId}</h3>
-                        <span className="version block">v {this.props.apk.version}</span>
-                        <span className="filename block">
-                            <i className="fa fa-file"></i> &nbsp;
-                            {this.props.apk.filename}
+            constructor(props) {
+                super(props);
+            }
+
+            handleClick = (id) => {
+                console.log(id);
+            }
+
+            render() {
+                return (
+                    <figure className="release block pull-left" onClick={this.handleClick(this.props.apk.id)}>
+                        <span className="version-code theme-fill"></span>
+                        <span className="version-code-val block">{this.props.apk.versionCode}</span>
+                        <a className="ctx-menu" href="javascript:void(0);">
+
+                        </a>
+                        <figcaption className="theme-gray-text">
+                            <img className="logo" src={this.props.apk.launcherIcon} />
+                            <h2>{this.props.apk.launcherName}</h2>
+                            <h3>{this.props.apk.packageId}</h3>
+                            <span className="version block">v {this.props.apk.version}</span>
+                            <span className="filename block">
+                                <i className="fa fa-file"></i> &nbsp;
+                                {this.props.apk.filename}
+                            </span>
+                        </figcaption>
+                        <span className="block tx-stamp theme-text ">
+                            {this.props.apk.createdTxStamp}
                         </span>
-                    </figcaption>
-                    <span className="block tx-stamp theme-text ">
-                        2017-01-03 23:45
-                    </span>
-                    <span className="block by-user theme-gray-text">
-                        {this.props.apk.user.name}
-                    </span>
-                </figure>
-            );
-          }
+                        <span className="block by-user theme-gray-text">
+                            {this.props.apk.user.name}
+                        </span>
+                    </figure>
+                );
+            }
+
+        }
+
+        class Releases extends React.Component {
+            getInitialState() {
+                return ({ data: null });
+            }
+
+            componentDidMount() {
+                $.get('/release').done(function(data) {
+                  this.setState({data: data});
+                }.bind(this));
+            }
+
+            refreshApks() {
+                $.get('/release').done(function(data) {
+                  this.setState({data: data});
+                }.bind(this));
+            }
+
+            render() {
+                if (this.state && this.state.data) {
+                    return (
+                        <div>{this.state.data.items.map(this.renderItem)}</div>
+                    );
+                }
+                return (
+                    <div>Loading...</div>
+                );
+            }
+
+            renderItem(item) {
+                return (
+                    <ReleaseCard key={item.id.toString()} apk={item} />
+                );
+            }
         }
 
         ReactDOM.render(
-          <h1>Hello, world!</h1>,
+          <Releases />,
           document.getElementById('releases')
         );
     </script>
